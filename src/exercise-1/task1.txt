@@ -1,0 +1,30 @@
+
+20 Good and Bad varaible and function name
+
+## Bad and Good varaible names.
+
+1. totalCost => totalPrice
+2. price => productPrice
+3. date => todayDate
+4. photo => image
+5. name => username
+5. number => phoneNumber
+6. userPhoto => profilePhoto
+7. data => responseData
+8. balance => remainingBalance
+9. height => imageHeight
+10. width => imageWidth
+
+
+## Good and Bad function names.
+
+1. updateProfile() => update()
+2. handleRegister() => register()
+3. getProfileData() => profileData()
+4. calculateDiscount() => discount()
+5. filterProfileData() => cleanProfileData()
+6. responseList() => list()
+7. getBooksData() => books()
+8. addPetData() => addData()
+9. setBackendConnction() => connection()
+10. addProfileImage() => profileImage()
