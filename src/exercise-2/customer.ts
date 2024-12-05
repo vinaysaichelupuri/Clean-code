@@ -1,11 +1,10 @@
 import { CarType } from "./car";
-import { Email } from "./email";
 import { Rent } from "./rent";
 
 export class Customer {
   private _name: string;
   private _rentals: Rent[] = [];
-  private coins = 0;
+  private _coins: number = 0;
 
   constructor(name: string) {
     this._name = name;
@@ -19,49 +18,62 @@ export class Customer {
     this._rentals.push(rent);
   }
 
-  public generateStatementAndSendBill() {
-    let totalAmount = 0;
+  public generateStatement() {
     let result = `Bill generated for customer ${this._name} \n`;
-    // eslint-disable-next-line @typescript-eslint/prefer-for-of
-    for (let i = 0; i < this._rentals.length; i++) {
-      let thisAmount = 0;
-      const each = this._rentals[i];
-
-      //calculate amount for each rental
-      switch (each.car.type) {
-        case CarType.NEW:
-          thisAmount += 10;
-          // add 5% discount if rented days more than 5
-          if (each.days > 5) {
-            thisAmount = thisAmount - thisAmount * 0.05;
-          }
-          break;
-        case CarType.REFURBISHED:
-          thisAmount += 5;
-          break;
-      }
-      // add coins for each rented car
-      this.coins += 1;
-      // add bonus +2 if rent days > 5
-      if (each.days > 5) {
-        this.coins += 2;
-      }
-      result += "\t" + each.car.name + "\t" + thisAmount + "\n";
-      totalAmount += thisAmount;
+    for (const rental of this._rentals) {
+      result += "\t" + rental.car.name + "\t" + this.rentalAmount(rental) + "\n";
     }
-
-    // add total amount
-    result += "Balance due: " + totalAmount + "\n";
+    
+    result += "Balance due: " + this.totalRentalAmount() + "\n";
     result += "You earned: " + this.coins + " coins \n";
-    Email.sendEmail(result);
     return result;
   }
-  public generateStatement (){
+
+  public generateHTMLStatement() {
+    let result = `<h1>Bill generated for customer ${this._name} \n </h1>`;
+
+    for (const rental of this._rentals) {
+      result +=
+        "<p>\t" + rental.car.name + "\t" + this.rentalAmount(rental) + "\n</p>";
+    }
+    
+    result += "<p> Balance due: " + this.totalRentalAmount() + "\n </p>";
+    result += "<p> You earned: " + this.coins + " coins \n </p>";
+    return result ;
+  }
+  
+
+   public get coins() {
+    for (const rental of this._rentals) {
+      this._coins += 1;
+      if (rental.days > 5) {
+        this._coins += 2;
+      }
+    }
+    return this._coins;
+  }
+
+  public totalRentalAmount(){
     let totalAmount = 0;
-      let result = `Bill generated for customer ${this._name} \n`;
+    for (const rental of this._rentals) {
+      totalAmount += this.rentalAmount(rental);
+    }
+    return totalAmount;
+  }
+  
+  private rentalAmount(rental: Rent) {
+    let rentalAmount: number = 0;
+    switch (rental.car.type) {
+      case CarType.NEW:
+        rentalAmount += 10;
+        if (rental.days > 5) {
+          rentalAmount = rentalAmount - rentalAmount * 0.05;
+        }
+        break;
+      case CarType.REFURBISHED:
+        rentalAmount += 5;
+        break;
+    }
+    return rentalAmount;
   }
 }
-
-
-
-
