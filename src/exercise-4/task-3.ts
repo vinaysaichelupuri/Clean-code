@@ -30,3 +30,41 @@ export class Length {
   }
 
 
+  export class Weight {
+    value: number;
+    unit: string;
+ 
+   constructor(value: number, unit: string) {
+     this.value = value;
+     this.unit = unit;
+   }
+ 
+    toBaseUnit(): number {
+     switch (this.unit.toLowerCase()) {
+       case "kilograms":
+         return this.value;
+       case "grams":
+         return this.value / 1000;
+       case "milligrams":
+         return this.value / 1000000;
+       default:
+         throw new Error("Unsupported unit");
+     }
+   }
+ 
+   static areEqual(weight1: Weight, weight2: Weight): boolean {
+     return weight1.toBaseUnit() === weight2.toBaseUnit();
+   }
+
+   add(weight: Weight): Weight {
+       const totalValue = this.toBaseUnit() + weight.toBaseUnit();
+       return new Weight(totalValue, "kilograms");
+     }
+
+     static addMultiple(weights: Weight[]): Weight {
+       const totalValue = weights.reduce((sum, weight) => sum + weight.toBaseUnit(), 0);
+       return new Weight(totalValue, "kilograms");
+     }
+ }
+
+

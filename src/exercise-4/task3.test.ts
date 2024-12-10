@@ -21,3 +21,33 @@ describe("Length Comparison", () => {
         expect(result).toEqual(new Length(2, "meters"));
       });
   });
+
+  describe("Weight Comparison", () => {
+    test("should return true for equal weights (1000 g = 1 kg)", () => {
+      const weight1 = new Weight(1000, "grams");
+      const weight2 = new Weight(1, "kilograms");
+      expect(Weight.areEqual(weight1, weight2)).toBe(true);
+    });
+  
+    test("should return false for unequal weights", () => {
+      const weight1 = new Weight(500, "grams");
+      const weight2 = new Weight(1, "kilograms");
+      expect(Weight.areEqual(weight1, weight2)).toBe(false);
+    });
+
+    test("should add two weights correctly (1000 g + 1 kg = 2 kg)", () => {
+        const weight1 = new Weight(1000, "grams");
+        const weight2 = new Weight(1, "kilograms");
+        const result = weight1.add(weight2);
+        expect(result).toEqual(new Weight(2, "kilograms"));
+      });
+      test("should add multiple weights correctly", () => {
+        const weights = [
+          new Weight(500, "grams"),
+          new Weight(1, "kilograms"),
+          new Weight(2000, "grams")
+        ];
+        const result = Weight.addMultiple(weights);
+        expect(result).toEqual(new Weight(3.5, "kilograms"));
+      });
+  });
