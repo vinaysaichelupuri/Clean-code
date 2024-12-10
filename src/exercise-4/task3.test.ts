@@ -51,3 +51,16 @@ describe("Length Comparison", () => {
         expect(result).toEqual(new Weight(3.5, "kilograms"));
       });
   });
+
+
+  describe("Adding Multiple Volumes", () => {
+    test("should add multiple volumes correctly", () => {
+      const volumes = [
+        new Volume(500, "millilitres"),
+        new Volume(1, "litres"),
+        new Volume(2000, "millilitres")
+      ];
+      const result = Volume.addMultiple(volumes);
+      expect(result).toEqual(new Volume(3.5, "litres"));
+    });
+  });

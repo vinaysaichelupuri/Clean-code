@@ -67,4 +67,30 @@ export class Length {
      }
  }
 
+ export class Volume {
+    value: number;
+    unit: string;
+ 
+   constructor(value: number, unit: string) {
+     this.value = value;
+     this.unit = unit;
+   }
+ 
+    toBaseUnit(): number {
+     switch (this.unit.toLowerCase()) {
+       case "litres":
+         return this.value;
+       case "millilitres":
+         return this.value / 1000;
+       default:
+         throw new Error("Unsupported unit");
+     }
+   }
+ 
+   static addMultiple(volumes: Volume[]): Volume {
+     const totalValue = volumes.reduce((sum, volume) => sum + volume.toBaseUnit(), 0);
+     return new Volume(totalValue, "litres");
+   }
+ }
+
 
